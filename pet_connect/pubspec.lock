@@ -62,6 +62,9 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+    assets:
+    - images/
+
   flutter_lints:
     dependency: "direct dev"
     description:
