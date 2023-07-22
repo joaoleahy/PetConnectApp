@@ -180,12 +180,15 @@ class ConfirmacaoScreen extends StatelessWidget {
   final DateTime data;
   final TimeOfDay hora;
 
+<<<<<<< HEAD
   String _formatTime(TimeOfDay time) {
     String hour = time.hour.toString().padLeft(2, '0');
     String minute = time.minute.toString().padLeft(2, '0');
     return '$hour:$minute';
   }
 
+=======
+>>>>>>> ed56162ad95818e824787343e72bf22fa4eec0e9
   const ConfirmacaoScreen({
     Key? key,
     required this.animal,
