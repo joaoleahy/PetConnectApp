@@ -26,19 +26,19 @@ class ListaAnimaisScreen extends StatelessWidget {
   final List<Map<String, String>> animais = [
     {
       'nome': 'Gato Tricolor',
-      'foto': 'images/gato-tricolor',
+      'foto': 'images/gato-tricolor.jpg',
     },
     {
       'nome': 'Gato Cinza',
-      'foto': 'images/gato-cinza',
+      'foto': 'images/gato-cinza.jpg',
     },
     {
       'nome': 'Cachorro Caramelo',
-      'foto': 'images/cachorro-caramelo',
+      'foto': 'images/cachorro-caramelo.jpg',
     },
     {
       'nome': 'Cachorro Preto',
-      'foto': 'images/vira-lata-filhote-1',
+      'foto': 'images/vira-lata-filhote-1.png',
     },
   ];
 
