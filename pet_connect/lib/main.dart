@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(const PetConnect());
 
 class PetConnect extends StatelessWidget {
-  const PetConnect({super.key});
+  const PetConnect({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ListaAnimaisScreen extends StatelessWidget {
     },
   ];
 
-  ListaAnimaisScreen({super.key});
+  ListaAnimaisScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class ListaAnimaisScreen extends StatelessWidget {
 class AgendamentoScreen extends StatefulWidget {
   final Map<String, String> animal;
 
-  const AgendamentoScreen({super.key, required this.animal});
+  const AgendamentoScreen({Key? key, required this.animal});
 
   @override
   _AgendamentoScreenState createState() => _AgendamentoScreenState();
@@ -101,6 +101,13 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
         selectedTime = picked;
       });
     }
+  }
+
+  bool _isTimeValid(TimeOfDay time) {
+    final now = DateTime.now();
+    final selectedDateTime =
+        DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return selectedDateTime.isAfter(now);
   }
 
   String _formatTime(TimeOfDay time) {
@@ -137,15 +144,20 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
             ElevatedButton(
               onPressed: () => _selectTime(context),
               child: Text(
-                selectedTime != null
+                selectedTime != null && _isTimeValid(selectedTime!)
                     ? 'Hora selecionada: ${_formatTime(selectedTime!)}'
                     : 'Selecionar Hora',
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: _isTimeValid(selectedTime!) ? null : Colors.grey,
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (selectedDate != null && selectedTime != null) {
+                if (selectedDate != null &&
+                    selectedTime != null &&
+                    _isTimeValid(selectedTime!)) {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -161,7 +173,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                          'Selecione data e hora para agendar a entrevista.'),
+                          'Selecione data e hora válidas para agendar a entrevista.'),
                     ),
                   );
                 }
@@ -180,15 +192,6 @@ class ConfirmacaoScreen extends StatelessWidget {
   final DateTime data;
   final TimeOfDay hora;
 
-<<<<<<< HEAD
-  String _formatTime(TimeOfDay time) {
-    String hour = time.hour.toString().padLeft(2, '0');
-    String minute = time.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
-  }
-
-=======
->>>>>>> ed56162ad95818e824787343e72bf22fa4eec0e9
   const ConfirmacaoScreen({
     Key? key,
     required this.animal,
@@ -201,7 +204,7 @@ class ConfirmacaoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Entrevista Agendada'),
-        automaticallyImplyLeading: false, // Remover o botão de voltar padrão
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
@@ -218,7 +221,7 @@ class ConfirmacaoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Entrevista marcada para: ${data.day}/${data.month}/${data.year} às ${_formatTime(hora)}',
+              'Entrevista marcada para: ${data.day}/${data.month}/${data.year} às ${hora.hour}:${hora.minute}',
               style: const TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),
@@ -230,7 +233,7 @@ class ConfirmacaoScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ListaAnimaisScreen(),
                   ),
-                  (route) => false, // Remove todas as rotas exceto a inicial
+                  (route) => false,
                 );
               },
               child: const Text('Voltar para a Lista'),
