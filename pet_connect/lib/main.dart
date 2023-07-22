@@ -14,6 +14,14 @@ class PetConnect extends StatelessWidget {
   }
 }
 
+class Utils {
+  static String formatTime(TimeOfDay time) {
+    String hour = time.hour.toString().padLeft(2, '0');
+    String minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+}
+
 class ListaAnimaisScreen extends StatelessWidget {
   final List<Map<String, String>> animais = [
     {
@@ -97,24 +105,26 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
       initialTime: TimeOfDay.now(),
     );
     if (picked != null && picked != selectedTime) {
-      setState(() {
-        selectedTime = picked;
-      });
+      final DateTime currentTime = DateTime.now();
+      final DateTime pickedDateTime = DateTime(
+        selectedDate!.year,
+        selectedDate!.month,
+        selectedDate!.day,
+        picked.hour,
+        picked.minute,
+      );
+      if (pickedDateTime.isAfter(currentTime)) {
+        setState(() {
+          selectedTime = picked;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Selecione um horário válido.'),
+          ),
+        );
+      }
     }
-  }
-
-  bool _isTimeValid(TimeOfDay? time) {
-    if (time == null) return false;
-    final now = DateTime.now();
-    final selectedDateTime =
-        DateTime(now.year, now.month, now.day, time.hour, time.minute);
-    return selectedDateTime.isAfter(now);
-  }
-
-  String _formatTime(TimeOfDay time) {
-    String hour = time.hour.toString().padLeft(2, '0');
-    String minute = time.minute.toString().padLeft(2, '0');
-    return '$hour:$minute';
   }
 
   @override
@@ -145,18 +155,15 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
             ElevatedButton(
               onPressed: () => _selectTime(context),
               child: Text(
-                selectedTime != null && _isTimeValid(selectedTime)
-                    ? 'Hora selecionada: ${_formatTime(selectedTime!)}'
+                selectedTime != null
+                    ? 'Hora selecionada: ${Utils.formatTime(selectedTime!)}'
                     : 'Selecionar Hora',
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: _isTimeValid(selectedTime) ? null : Colors.grey,
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (selectedDate != null && _isTimeValid(selectedTime)) {
+                if (selectedDate != null && selectedTime != null) {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -172,7 +179,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                          'Selecione data e hora válidas para agendar a entrevista.'),
+                          'Selecione data e hora para agendar a entrevista.'),
                     ),
                   );
                 }
@@ -220,7 +227,7 @@ class ConfirmacaoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Entrevista marcada para: ${data.day}/${data.month}/${data.year} às ${hora.hour}:${hora.minute}',
+              'Entrevista marcada para: ${data.day}/${data.month}/${data.year} às ${Utils.formatTime(hora)}',
               style: const TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),
