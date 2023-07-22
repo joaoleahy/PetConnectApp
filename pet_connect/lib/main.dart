@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(const PetConnect());
 
 class PetConnect extends StatelessWidget {
-  const PetConnect({Key? key});
+  const PetConnect({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ListaAnimaisScreen extends StatelessWidget {
     },
   ];
 
-  ListaAnimaisScreen({Key? key});
+  ListaAnimaisScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class ListaAnimaisScreen extends StatelessWidget {
 class AgendamentoScreen extends StatefulWidget {
   final Map<String, String> animal;
 
-  const AgendamentoScreen({Key? key, required this.animal});
+  const AgendamentoScreen({super.key, required this.animal});
 
   @override
   _AgendamentoScreenState createState() => _AgendamentoScreenState();
@@ -103,7 +103,8 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
     }
   }
 
-  bool _isTimeValid(TimeOfDay time) {
+  bool _isTimeValid(TimeOfDay? time) {
+    if (time == null) return false;
     final now = DateTime.now();
     final selectedDateTime =
         DateTime(now.year, now.month, now.day, time.hour, time.minute);
@@ -144,20 +145,18 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
             ElevatedButton(
               onPressed: () => _selectTime(context),
               child: Text(
-                selectedTime != null && _isTimeValid(selectedTime!)
+                selectedTime != null && _isTimeValid(selectedTime)
                     ? 'Hora selecionada: ${_formatTime(selectedTime!)}'
                     : 'Selecionar Hora',
               ),
               style: ElevatedButton.styleFrom(
-                primary: _isTimeValid(selectedTime!) ? null : Colors.grey,
+                primary: _isTimeValid(selectedTime) ? null : Colors.grey,
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (selectedDate != null &&
-                    selectedTime != null &&
-                    _isTimeValid(selectedTime!)) {
+                if (selectedDate != null && _isTimeValid(selectedTime)) {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -204,7 +203,7 @@ class ConfirmacaoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Entrevista Agendada'),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // Remover o botão de voltar padrão
       ),
       body: Center(
         child: Column(
@@ -233,7 +232,7 @@ class ConfirmacaoScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ListaAnimaisScreen(),
                   ),
-                  (route) => false,
+                  (route) => false, // Remove todas as rotas exceto a inicial
                 );
               },
               child: const Text('Voltar para a Lista'),
