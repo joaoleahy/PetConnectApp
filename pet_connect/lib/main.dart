@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const AdocaoApp());
+void main() => runApp(const PetConnect());
 
-class AdocaoApp extends StatelessWidget {
-  const AdocaoApp({super.key});
+class PetConnect extends StatelessWidget {
+  const PetConnect({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class ListaAnimaisScreen extends StatelessWidget {
             ),
             title: Text(animais[index]['nome']!),
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
@@ -103,6 +103,12 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
     }
   }
 
+  String _formatTime(TimeOfDay time) {
+    String hour = time.hour.toString().padLeft(2, '0');
+    String minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +138,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
               onPressed: () => _selectTime(context),
               child: Text(
                 selectedTime != null
-                    ? 'Hora selecionada: ${selectedTime!.hour}:${selectedTime!.minute}'
+                    ? 'Hora selecionada: ${_formatTime(selectedTime!)}'
                     : 'Selecionar Hora',
               ),
             ),
@@ -140,7 +146,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
             ElevatedButton(
               onPressed: () {
                 if (selectedDate != null && selectedTime != null) {
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ConfirmacaoScreen(
@@ -149,12 +155,14 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                         hora: selectedTime!,
                       ),
                     ),
+                    (route) => route.isFirst,
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text(
-                            'Selecione data e hora para agendar a entrevista.')),
+                      content: Text(
+                          'Selecione data e hora para agendar a entrevista.'),
+                    ),
                   );
                 }
               },
@@ -172,16 +180,26 @@ class ConfirmacaoScreen extends StatelessWidget {
   final DateTime data;
   final TimeOfDay hora;
 
-  const ConfirmacaoScreen(
-      {super.key,
-      required this.animal,
-      required this.data,
-      required this.hora});
+  String _formatTime(TimeOfDay time) {
+    String hour = time.hour.toString().padLeft(2, '0');
+    String minute = time.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
+  }
+
+  const ConfirmacaoScreen({
+    Key? key,
+    required this.animal,
+    required this.data,
+    required this.hora,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Entrevista Agendada')),
+      appBar: AppBar(
+        title: const Text('Entrevista Agendada'),
+        automaticallyImplyLeading: false, // Remover o botão de voltar padrão
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -197,14 +215,20 @@ class ConfirmacaoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'Entrevista marcada para: ${data.day}/${data.month}/${data.year} às ${hora.hour}:${hora.minute}',
+              'Entrevista marcada para: ${data.day}/${data.month}/${data.year} às ${_formatTime(hora)}',
               style: const TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Voltar para a tela inicial
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ListaAnimaisScreen(),
+                  ),
+                  (route) => false, // Remove todas as rotas exceto a inicial
+                );
               },
               child: const Text('Voltar para a Lista'),
             ),
