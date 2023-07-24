@@ -24,7 +24,10 @@ class ConfirmacaoScreen extends StatelessWidget {
         automaticallyImplyLeading: false, // Remover o botão de voltar padrão
       ),
       body: Center(
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
@@ -64,7 +67,8 @@ class ConfirmacaoScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
+          ],
+        )),
     );
   }
 }
