@@ -65,7 +65,10 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Agendamento de Adoção')),
       body: Center(
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
@@ -149,7 +152,9 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
               child: const Text('Agendar Entrevista'),
             ),
           ],
-        ),
+        )
+          ],
+        )
       ),
     );
   }
