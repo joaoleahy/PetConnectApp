@@ -21,6 +21,13 @@ class ListaAnimaisScreen extends StatelessWidget {
     },
   ];
 
+  final List<String> entrevistadores = [
+    'João da Silva',
+    'Maria Oliveira',
+    'Pedro Santos',
+    'Ana Souza',
+  ];
+
   ListaAnimaisScreen({super.key});
 
   @override
@@ -39,8 +46,8 @@ class ListaAnimaisScreen extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      AgendamentoScreen(animal: animais[index]),
+                  builder: (context) => AgendamentoScreen(
+                      animal: animais[index], entrevistadores: entrevistadores),
                 ),
               );
             },

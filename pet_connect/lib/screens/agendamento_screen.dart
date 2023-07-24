@@ -4,8 +4,10 @@ import '../utils/utils.dart';
 
 class AgendamentoScreen extends StatefulWidget {
   final Map<String, String> animal;
+  final List<String> entrevistadores;
 
-  const AgendamentoScreen({super.key, required this.animal});
+  const AgendamentoScreen(
+      {super.key, required this.animal, required this.entrevistadores});
 
   @override
   _AgendamentoScreenState createState() => _AgendamentoScreenState();
@@ -14,6 +16,7 @@ class AgendamentoScreen extends StatefulWidget {
 class _AgendamentoScreenState extends State<AgendamentoScreen> {
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
+  String? selectedEntrevistador;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -60,7 +63,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Agendamento de Entrevista')),
+      appBar: AppBar(title: const Text('Agendamento de Adoção')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,11 +73,37 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
               radius: 50,
             ),
             const SizedBox(height: 20),
+            const Text(
+              'Escolhendo um animal para adoção:',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
             Text(
               widget.animal['nome']!,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
+            const Text(
+              'Escolha um entrevistador:',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            DropdownButton<String>(
+              value: selectedEntrevistador,
+              hint: const Text('Selecione um entrevistador'),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedEntrevistador = newValue;
+                });
+              },
+              items: widget.entrevistadores
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () => _selectDate(context),
               child: Text(selectedDate != null
@@ -93,7 +122,9 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (selectedDate != null && selectedTime != null) {
+                if (selectedDate != null &&
+                    selectedTime != null &&
+                    selectedEntrevistador != null) {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -101,6 +132,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                         animal: widget.animal,
                         data: selectedDate!,
                         hora: selectedTime!,
+                        entrevistador: selectedEntrevistador!,
                       ),
                     ),
                     (route) => route.isFirst,
@@ -109,7 +141,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                          'Selecione data e hora para agendar a entrevista.'),
+                          'Selecione data, hora e entrevistador para agendar a entrevista.'),
                     ),
                   );
                 }

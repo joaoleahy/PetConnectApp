@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'lista_animais_screen.dart';
 import '../utils/utils.dart';
+import 'lista_animais_screen.dart'; // Importe a tela ListaAnimaisScreen
 
 class ConfirmacaoScreen extends StatelessWidget {
   final Map<String, String> animal;
   final DateTime data;
   final TimeOfDay hora;
+  final String entrevistador;
 
   const ConfirmacaoScreen({
     Key? key,
     required this.animal,
     required this.data,
     required this.hora,
+    required this.entrevistador,
   }) : super(key: key);
 
   @override
@@ -41,6 +43,12 @@ class ConfirmacaoScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
+            Text(
+              'Entrevistador: $entrevistador',
+              style: const TextStyle(fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
@@ -48,7 +56,8 @@ class ConfirmacaoScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ListaAnimaisScreen(),
                   ),
-                  (route) => false, // Remove todas as rotas exceto a inicial
+                  (route) =>
+                      false, // Remove todas as rotas exceto a tela inicial
                 );
               },
               child: const Text('Voltar para a Lista'),
