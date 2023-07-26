@@ -12,6 +12,7 @@ class AgendamentoScreen extends StatefulWidget {
       : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _AgendamentoScreenState createState() => _AgendamentoScreenState();
 }
 
@@ -62,6 +63,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
           selectedTime = picked;
         });
       } else {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Selecione um horário válido.'),
