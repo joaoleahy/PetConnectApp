@@ -5,7 +5,19 @@ A ideia do projeto consiste em um aplicativo que visa facilitar o processo de ad
 ## Instruções para executar o projeto
 
 - Primeiro executar o comando: `flutter pub get`
-- Segundo para rodar: execute o comando: `flutter run -d chrome -t lib/main.dart` no terminal ou apenas inicie o debug em lib/main.dart 
+- Segundo para rodar: execute o comando: `flutter run -d chrome -t lib/main.dart` no terminal ou apenas inicie o debug em lib/main.dart
+
+## Imagens
+
+- Na tela principal temos a lista de animais disponíveis para adoção.
+  ![tela1](https://github.com/joaoleahy/PetConnectApp/assets/86070920/aec882e9-11a6-427e-a4d8-26144e68f160)
+
+- Ao escolher um animal, o usuário deverá selecionar uma data, um horário e um entrevistador para saber se tem o perfil apto para de fato realizar a adoção.
+   ![tela2](https://github.com/joaoleahy/PetConnectApp/assets/86070920/02eb62ab-fefc-491f-b036-08ea8880841c)
+
+- Após isso ele receberá uma tela de confirmação indicando o animal, a data e hora, e o entrevistador escolhidos.
+  ![tela3](https://github.com/joaoleahy/PetConnectApp/assets/86070920/380f34eb-f1f8-4c91-b5ae-bcbc03f95b1c)
+
 
 ## Integrantes da Equipe
 
