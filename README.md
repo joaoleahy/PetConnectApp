@@ -10,7 +10,7 @@ A ideia do projeto consiste em um aplicativo que visa facilitar o processo de ad
 ## Imagens
 
 - Na tela principal temos a lista de animais disponíveis para adoção.
-  ![tela1](https://github.com/joaoleahy/PetConnectApp/assets/86070920/aec882e9-11a6-427e-a4d8-26144e68f160)
+![tela1](https://github.com/joaoleahy/PetConnectApp/assets/86070920/aec882e9-11a6-427e-a4d8-26144e68f160)
 
 - Ao escolher um animal, o usuário deverá selecionar uma data, um horário e um entrevistador para saber se tem o perfil apto para de fato realizar a adoção.
    ![tela2](https://github.com/joaoleahy/PetConnectApp/assets/86070920/02eb62ab-fefc-491f-b036-08ea8880841c)
