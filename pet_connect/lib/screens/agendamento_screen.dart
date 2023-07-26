@@ -7,11 +7,9 @@ class AgendamentoScreen extends StatefulWidget {
   final Map<String, String> animal;
   final List<String> entrevistadores;
 
-  const AgendamentoScreen({
-    Key? key,
-    required this.animal,
-    required this.entrevistadores,
-  });
+  const AgendamentoScreen(
+      {Key? key, required this.animal, required this.entrevistadores})
+      : super(key: key);
 
   @override
   _AgendamentoScreenState createState() => _AgendamentoScreenState();
@@ -37,6 +35,15 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
   }
 
   Future<void> _selectTime(BuildContext context) async {
+    if (selectedDate == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Selecione uma data antes de escolher o horário.'),
+        ),
+      );
+      return;
+    }
+
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -112,12 +119,19 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                 ),
                 const SizedBox(height: 40),
                 ElevatedButton(
+                  onPressed: () => _selectDate(context),
+                  child: Text(selectedDate != null
+                      ? 'Data selecionada: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+                      : 'Selecionar Data'),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
                   onPressed:
                       selectedDate != null ? () => _selectTime(context) : null,
                   child: Text(
-                    selectedDate != null
-                        ? 'Hora selecionada: ${selectedTime != null ? Utils.formatTime(selectedTime!) : "Selecionar Hora"}'
-                        : 'Selecione uma Data primeiro',
+                    selectedTime != null
+                        ? 'Hora selecionada: ${Utils.formatTime(selectedTime!)}'
+                        : 'Selecionar Hora',
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -164,7 +178,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                   child: const Text('Voltar para a Lista'),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ),
