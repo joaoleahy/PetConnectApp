@@ -7,8 +7,11 @@ class AgendamentoScreen extends StatefulWidget {
   final Map<String, String> animal;
   final List<String> entrevistadores;
 
-  const AgendamentoScreen(
-      {super.key, required this.animal, required this.entrevistadores});
+  const AgendamentoScreen({
+    Key? key,
+    required this.animal,
+    required this.entrevistadores,
+  });
 
   @override
   _AgendamentoScreenState createState() => _AgendamentoScreenState();
@@ -70,107 +73,100 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
           shrinkWrap: true,
           children: [
             Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(widget.animal['foto']!),
-              radius: 50,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Escolhendo um animal para adoção:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              widget.animal['nome']!,
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 40),
-            const Text(
-              'Escolha um entrevistador:',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            DropdownButton<String>(
-              value: selectedEntrevistador,
-              hint: const Text('Selecione um entrevistador'),
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedEntrevistador = newValue;
-                });
-              },
-              items: widget.entrevistadores
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () => _selectDate(context),
-              child: Text(selectedDate != null
-                  ? 'Data selecionada: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                  : 'Selecionar Data'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _selectTime(context),
-              child: Text(
-                selectedTime != null
-                    ? 'Hora selecionada: ${Utils.formatTime(selectedTime!)}'
-                    : 'Selecionar Hora',
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (selectedDate != null &&
-                    selectedTime != null &&
-                    selectedEntrevistador != null) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ConfirmacaoScreen(
-                        animal: widget.animal,
-                        data: selectedDate!,
-                        hora: selectedTime!,
-                        entrevistador: selectedEntrevistador!,
-                      ),
-                    ),
-                    (route) => route.isFirst,
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'Selecione data, hora e entrevistador para agendar a entrevista.'),
-                    ),
-                  );
-                }
-              },
-              child: const Text('Agendar Entrevista'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ListaAnimaisScreen(),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(widget.animal['foto']!),
+                  radius: 50,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Escolhendo um animal para adoção:',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  widget.animal['nome']!,
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 40),
+                const Text(
+                  'Escolha um entrevistador:',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                DropdownButton<String>(
+                  value: selectedEntrevistador,
+                  hint: const Text('Selecione um entrevistador'),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedEntrevistador = newValue;
+                    });
+                  },
+                  items: widget.entrevistadores
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed:
+                      selectedDate != null ? () => _selectTime(context) : null,
+                  child: Text(
+                    selectedDate != null
+                        ? 'Hora selecionada: ${selectedTime != null ? Utils.formatTime(selectedTime!) : "Selecionar Hora"}'
+                        : 'Selecione uma Data primeiro',
                   ),
-                  (route) =>
-                      false, // Remove todas as rotas exceto a tela inicial
-                );
-              },
-              child: const Text('Voltar para a Lista'),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (selectedDate != null &&
+                        selectedTime != null &&
+                        selectedEntrevistador != null) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ConfirmacaoScreen(
+                            animal: widget.animal,
+                            data: selectedDate!,
+                            hora: selectedTime!,
+                            entrevistador: selectedEntrevistador!,
+                          ),
+                        ),
+                        (route) => route.isFirst,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Selecione data, hora e entrevistador para agendar a entrevista.'),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text('Agendar Entrevista'),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ListaAnimaisScreen(),
+                      ),
+                      (route) =>
+                          false, // Remove todas as rotas exceto a tela inicial
+                    );
+                  },
+                  child: const Text('Voltar para a Lista'),
+                ),
+              ],
             ),
           ],
-        )
-          ],
-        )
+        ),
       ),
     );
   }
